@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    // Todo: https://stackoverflow.com/questions/71272054/how-to-run-multiple-commands-at-once-asynchronously-in-fish-shell
+    {
+      "name": "Run debug",
+      "type": "f5anything",
+      "request": "launch",
+      "command": "cargo run",
+      "terminalName": "Cargo"
+    },
+    {
+      "name": "Run release",
+      "type": "f5anything",
+      "request": "launch",
+      "command": "cargo run --release",
+      "terminalName": "Cargo"
+    },
+    {
+      "name": "Build release",
+      "type": "f5anything",
+      "request": "launch",
+      "command": "cargo build --release",
+      "terminalName": "Cargo"
+    },
+  ]
+}

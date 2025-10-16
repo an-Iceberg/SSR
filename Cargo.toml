@@ -1,0 +1,11 @@
+[package]
+name = "SSR"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eframe = "0.32.3"
+egui = "0.32.3"
+polars = "0.51.0"
+roxmltree = "0.20.0"
+serde = "1.0.226"
