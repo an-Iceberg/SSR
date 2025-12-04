@@ -1,0 +1,13 @@
+[
+  {
+    "label": "Run",
+    "command": "cargo run --color always --message-format human",
+    "env": {},
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "always",
+    "hide": "never",
+    "show_summary": true,
+    "show_command": true
+  }
+]

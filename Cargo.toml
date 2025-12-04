@@ -1,11 +1,13 @@
 [package]
 name = "SSR"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
-eframe = "0.32.3"
-egui = "0.32.3"
-polars = "0.51.0"
+colored = "3.0.0"
+creature_feature = "0.1.7"
+hashbrown = "0.16.0"
+indicatif = "0.18.2"
 roxmltree = "0.20.0"
 serde = "1.0.226"
+strsim = "0.11.1"
