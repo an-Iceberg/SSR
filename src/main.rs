@@ -81,11 +81,9 @@ fn main()
 
   dbg!(documents.get(&245));
 
-  // let queries_bar = bar_factory(queries.len() as u64, "Running queries…".to_string());
   for query in queries
   {
     let mut similarity_scores = Vec::with_capacity(21_000);
-    // let documents_bar = bar_factory(documents.len() as u64, "Calculating similarities…".to_string());
     for document in &documents
     {
       let mut score = 0;
@@ -100,55 +98,24 @@ fn main()
         }
       }
       similarity_scores.push((*document.0, score));
-      // documents_bar.inc(1);
     }
-    // documents_bar.finish_and_clear();
     similarity_scores.sort_by_key(|entry| entry.1);
+    let result_docs = similarity_scores[0..10]
+      .to_vec()
+      .iter()
+      .map(|(id, _)| *id)
+      .collect::<Vec<u16>>();
+
+    println!();
     println!(
       "query #{}: {:?}",
       query.0,
-      similarity_scores[0..10]
-        .to_vec()
-        .iter()
-        .map(|(id, _)| *id)
-        .collect::<Vec<u16>>()
+      result_docs
     );
-    // queries_bar.inc(1);
+    println!("query: \"{}\"", query.1.text());
+    for doc_id in result_docs
+    {
+      println!("{}: \"{}\"", doc_id, documents.get(&doc_id).unwrap().text());
+    }
   }
-  // queries_bar.finish_and_clear();
-
-  // FIX: this takes waaaaaaay too long
-  // let other_documents = documents.iter()
-  //   .map(|(_, doc)| doc.clone())
-  //   .clone()
-  //   .collect::<Vec<Doc>>();
-
-  // let outer_bar = bar_factory(documents.len() as u64, "computing similar documents".to_string());
-  // for document in documents.values_mut()
-  // {
-  //   let inner_bar = bar_factory(other_documents.len() as u64, format!("calculating levenshtein distances for doc#{}:", document.record_ID()));
-  //   let mut distances: Vec<(u16, usize)> = vec![];
-  //   for other_document in other_documents.iter()
-  //   {
-  //     if other_document.record_ID() == document.record_ID() { continue; }
-  //     distances.push((
-  //       document.record_ID(),
-  //       levenshtein(document.text(), other_document.text())
-  //     ));
-  //     inner_bar.inc(1);
-  //   }
-  //   distances.sort_by(|a, b| a.1.cmp(&b.1));
-  //   document.set_similar_doc_ids(
-  //     distances.iter()
-  //       .map(|(id, _)| *id)
-  //       .take(10)
-  //       .collect()
-  //   );
-
-  //   inner_bar.finish_and_clear();
-  //   outer_bar.inc(1);
-  // }
-  // outer_bar.finish_and_clear();
-
-  // dbg!(documents.get(&245));
 }
