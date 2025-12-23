@@ -4,7 +4,7 @@
 
 mod doc;
 
-use {crate::doc::Doc, hashbrown::HashMap, indicatif::{ProgressBar, ProgressStyle}, std::fs, strsim::levenshtein};
+use {crate::doc::Doc, hashbrown::HashMap, indicatif::{ProgressBar, ProgressStyle}, std::{fs::{self, File}, io::Write}, strsim::levenshtein};
 use colored::Colorize;
 
 fn bar_factory(len: u64, message: String) -> ProgressBar
@@ -76,10 +76,13 @@ fn main()
   let documents = documents;
   let queries = queries;
 
-  dbg!(queries.len());
-  dbg!(documents.len());
+  // dbg!(queries.len());
+  // dbg!(documents.len());
 
-  dbg!(documents.get(&245));
+  // dbg!(documents.get(&245));
+
+  let path = "trec_eval";
+  let mut file = File::create(path).unwrap();
 
   for query in queries
   {
@@ -100,22 +103,19 @@ fn main()
       similarity_scores.push((*document.0, score));
     }
     similarity_scores.sort_by_key(|entry| entry.1);
-    let result_docs = similarity_scores[0..10]
-      .to_vec()
-      .iter()
-      .map(|(id, _)| *id)
-      .collect::<Vec<u16>>();
 
-    println!();
-    println!(
-      "query #{}: {:?}",
-      query.0,
-      result_docs
-    );
-    println!("query: \"{}\"", query.1.text());
-    for doc_id in result_docs
+    for (rank, (document_id, score)) in similarity_scores.iter().enumerate()
     {
-      println!("{}: \"{}\"", doc_id, documents.get(&doc_id).unwrap().text());
+      file.write_fmt(
+        format_args!(
+          "{} Q0 {} {} {} levenshtein\n",
+          query.0,
+          document_id,
+          rank,
+          score,
+        )
+      ).unwrap();
+      if rank >= 999 { break; }
     }
   }
 }

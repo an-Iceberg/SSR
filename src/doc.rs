@@ -1,5 +1,3 @@
-use std::collections::{ HashSet};
-
 #[derive(Default, Debug, PartialEq, Clone)]
 pub(crate) struct Doc
 {
